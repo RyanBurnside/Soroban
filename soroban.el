@@ -102,12 +102,12 @@
 	       (<= y (+ (bead-spindle-y temp) 7))
 	       (soroban-set-clicked i y)))))
 
-(defun soroban-buffer-get-char(x y)
+(defun soroban-buffer-get-char (x y)
   (elt *soroban-buffer*
        (+ x
 	  (* y *buffer-width*))))
 
-(defun soroban-buffer-set-char(x y value)
+(defun soroban-buffer-set-char (x y value)
   (aset *soroban-buffer*      
 	(+ x
 	  (* y *buffer-width*))
@@ -124,7 +124,7 @@
 				 ?\*))))
 
 (defun soroban-draw-bead (x y)
-  "Draw a 3 character bead <_>"
+  "Draw a 3 character bead <->"
   (soroban-buffer-set-char x y ?\<)
   (soroban-buffer-set-char (1+ x) y ?\-)
   (soroban-buffer-set-char (+ x 2) y ?\>))
@@ -154,7 +154,7 @@
 					     (number-to-string
 					     (soroban-get-value spindle))))))
 
-(defun soroban-print-buffer()
+(defun soroban-print-buffer ()
   "Clear screen, blit the buffer onto the screen"
   (let ((inhibit-read-only t)
 	(end-pos (point)))
@@ -179,7 +179,7 @@
 	  (setf (bead-spindle-beads n) (vector 1 0 0 1 1 1 1)))
   (soroban-print-buffer))
 
-(defun move-bead()
+(defun move-bead ()
   "Finds the bead of the spindle clicked"
   (interactive)
   (let ((row (1- (line-number-at-pos)))
