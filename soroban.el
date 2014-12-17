@@ -1,11 +1,37 @@
-;;; Ryan Burnside 2014
-;;; Emacs Soroban (Japanese Abacus)
-;;; Permission is granted to hack this freely released under GPL3
-;;; m-x soroban will start Soroban Mode
-;;; Spacebar to push a bead when the cursor is over it
-;;; c will clear the soroban
-;;; Mouse button 1 moves the bead underneath
-;;; Mouse button 3 clears the soroban
+;;; soroban.el --- Virtual Japanese Soroban for Emacs
+
+;; Copyright (C) 2014 Ryan Burnside
+
+;; Author: Ryan Burnside
+;; Version: 1.0.0
+;; Keywords: soroban abacus
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary
+;; This is a program which emulates a Japanese soroban for self education and learning.
+;; m-x soroban will start Soroban Mode
+
+;; KEYBOARD
+;; Spacebar to push a bead <-> when the cursor is over it
+;; c will clear the soroban
+
+;; MOUSE (where supported)
+;; Mouse button 1 moves the bead <-> underneath
+;; Mouse button 3 clears the soroban
+
+;;; Code
 
 (require 'cl)
 
@@ -100,7 +126,7 @@
 (defun soroban-draw-bead (x y)
   "Draw a 3 character bead <_>"
   (soroban-buffer-set-char x y ?\<)
-  (soroban-buffer-set-char (1+ x) y ?\_)
+  (soroban-buffer-set-char (1+ x) y ?\-)
   (soroban-buffer-set-char (+ x 2) y ?\>))
 
 (defun soroban-draw-rod (x y)
@@ -154,10 +180,11 @@
   (soroban-print-buffer))
 
 (defun move-bead()
-  "Finds the bead of the spindle clicked, sets to 0"
+  "Finds the bead of the spindle clicked"
   (interactive)
   (let ((row (1- (line-number-at-pos)))
 	(column (current-column)))
     (soroban-spindle-clicked column row))
   (soroban-print-buffer))
     
+;;; soroban.el ends here
