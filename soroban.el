@@ -1,9 +1,9 @@
-;;; soroban.el --- Virtual Japanese Soroban for Emacs
+;;; soroban.el --- Virtual Japanese Soroban Abacus for Emacs
 
 ;; Copyright (C) 2014 Ryan Burnside
 
 ;; Author: Ryan Burnside
-;; Version: 1.0.0
+;; Version: 1.0.1
 ;; Keywords: soroban abacus
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -20,7 +20,8 @@
 ;; along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary
-;; This is a program which emulates a Japanese soroban for self education and learning.
+;; Add (require 'soroban) so your .emacs file after installation
+;; This is a program which emulates a Japanese soroban for calculations.
 ;; m-x soroban will start Soroban Mode
 
 ;; KEYBOARD
@@ -50,9 +51,10 @@
 (defun soroban-init ()
   "Create the buffer to hold the screen images"
   (setq *num-soroban-columns* 19)
-  (setq *buffer-height* 10)
-  (setq *buffer-width* 79)
-  (setq *soroban-buffer* (make-vector (* *buffer-width* *buffer-height*) ?\ ))
+  (setq *soroban-buffer-height* 10)
+  (setq *soroban-buffer-width* 79)
+  (setq *soroban-buffer* (make-vector (* *soroban-buffer-width* 
+					 *soroban-buffer-height*) ?\ ))
   (setq *soroban-rods* (loop for i from 0 to (1- *num-soroban-columns*)
 			    collecting (make-bead-spindle :x (* i 4) :y 0
 						:beads (vector 1 0 0 1 1 1 1))))
@@ -105,12 +107,12 @@
 (defun soroban-buffer-get-char (x y)
   (elt *soroban-buffer*
        (+ x
-	  (* y *buffer-width*))))
+	  (* y *soroban-buffer-width*))))
 
 (defun soroban-buffer-set-char (x y value)
   (aset *soroban-buffer*      
 	(+ x
-	  (* y *buffer-width*))
+	  (* y *soroban-buffer-width*))
        value))
 
 (defun soroban-draw-dots ()
@@ -166,8 +168,8 @@
     (soroban-draw-dots)
     (dotimes (i (length *soroban-rods*))
       (soroban-draw-spindle (nth i *soroban-rods*)))
-    (dotimes (row *buffer-height*)
-      (dotimes (column *buffer-width*)
+    (dotimes (row *soroban-buffer-height*)
+      (dotimes (column *soroban-buffer-width*)
 	(insert (soroban-buffer-get-char column row)))
       (insert "\n"))
     ;; Need to go to the former cursor position now
@@ -186,5 +188,7 @@
 	(column (current-column)))
     (soroban-spindle-clicked column row))
   (soroban-print-buffer))
+
+(provide 'soroban)
     
 ;;; soroban.el ends here
